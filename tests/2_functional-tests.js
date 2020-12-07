@@ -10,6 +10,8 @@ suite('Functional Tests', function() {
     suite("Routing Tests", function () {
         test("Create an issue with every field", function (done) {
 
+            let project         = "programming"
+
             let issue_title     = "New Task";
             let issue_text      = "A new task is upon us need to do it quick lads!!";
             let created_by      = "Madmax";
@@ -17,7 +19,7 @@ suite('Functional Tests', function() {
             let status_text     = "Planning";
 
             chai.request(server)
-                .post("/api/issues/{project}")
+                .post(`/api/issues/${project}`)
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send({
                     issue_title,
