@@ -132,6 +132,27 @@ suite('Functional Tests', function() {
                     done();
                 });
         });
+
+        test("View issues on a project with one filter", function (done) {
+
+            let project = "programming"
+            let _id = "5fce6ec3fe22937aa190a80d"
+            let query = `?_id=${_id}`
+
+            chai.request(server)
+                .get(`/api/issues/${project}`+query)
+                .end( async (err, res) => {
+                    let resBody = res.body;
+
+                    // get issues from the database
+                    let issuesForProject    = await IssueModel.find({ project, _id })
+                    let noOfIssues          = issuesForProject.length;
+
+                    assert.equal(resBody.length, noOfIssues);
+                    assert.equal(res.status, 200);
+                    done();
+                });
+        });
     })
 
 });
