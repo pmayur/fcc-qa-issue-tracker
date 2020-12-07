@@ -9,8 +9,8 @@ module.exports = async function (req, res) {
     let issue_title = req.body.issue_title;
     let issue_text = req.body.issue_text;
     let created_by = req.body.created_by;
-    let assigned_to = req.body.assigned_to;
-    let status_text = req.body.status_text;
+    let assigned_to = req.body.assigned_to || "";
+    let status_text = req.body.status_text || "";
 
     // create a new instance of the model
     let newIssue = new IssueModel({
