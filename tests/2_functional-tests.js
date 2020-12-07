@@ -241,6 +241,32 @@ suite('Functional Tests', function() {
                 });
         });
 
+        test("Update an issue with no fields to update", function (done) {
+
+            let project = "programming";
+
+            let _id = "5fce6ec3fe22937aa190a80d";
+            let assigned_to = "";
+            let status_text = "";
+            let issue_title = "";
+
+            chai.request(server)
+                .put(`/api/issues/${project}`)
+                .set("content-type", "application/x-www-form-urlencoded")
+                .send({
+                    _id,
+                    assigned_to,
+                    status_text,
+                    issue_title
+                })
+                .end( (err, res) => {
+                    assert.equal(res.status, 200);
+                    assert.equal(res.body.error, "could not update");
+                    assert.equal(res.body._id, _id);
+                    done();
+                });
+        });
+
         test("Update an issue with missing _id", function (done) {
 
             let project = "programming";
