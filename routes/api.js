@@ -9,10 +9,7 @@ module.exports = function (app) {
       
     })
     
-    .post(function (req, res){
-      let project = req.params.project;
-      
-    })
+    .post(require('./issue/post-issue'))
     
     .put(function (req, res){
       let project = req.params.project;
