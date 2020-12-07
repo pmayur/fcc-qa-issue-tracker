@@ -4,6 +4,8 @@ const { response } = require("express");
 
 module.exports = async function (req, res) {
     // get all the data received from the body
+    let project = req.params.project
+
     let issue_title = req.body.issue_title;
     let issue_text = req.body.issue_text;
     let created_by = req.body.created_by;
@@ -12,6 +14,7 @@ module.exports = async function (req, res) {
 
     // create a new instance of the model
     let newIssue = new IssueModel({
+        project,
         issue_title,
         issue_text,
         created_by,
