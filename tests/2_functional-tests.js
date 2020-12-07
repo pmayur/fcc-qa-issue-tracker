@@ -77,6 +77,35 @@ suite('Functional Tests', function() {
                     done();
                 });
         });
+
+        test("Create an issue without required fields", function (done) {
+
+            let issue_title     = undefined;
+            let issue_text      = "A new task is upon us need to do it quick lads!!";
+            let created_by      = "Madmax";
+            let assigned_to     = "";
+            let status_text     = "";
+
+            chai.request(server)
+                .post("/api/issues/{project}")
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .send({
+                    issue_title,
+                    issue_text,
+                    created_by,
+                    assigned_to,
+                    status_text,
+                })
+                .end( (err, res) => {
+                    let resBody = res.body;
+
+                    assert.equal(res.status, 200);
+                    assert.exists(resBody.error)
+                    assert.equal(resBody.error, "required field(s) missing");
+                    assert.notExists(err);
+                    done();
+                });
+        });
     })
 
 });
