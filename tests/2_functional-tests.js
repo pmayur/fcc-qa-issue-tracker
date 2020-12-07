@@ -172,6 +172,121 @@ suite('Functional Tests', function() {
                     done();
                 });
         });
+
+        test("Update one field on an issue", function (done) {
+
+            let project = "programming";
+            let _id = "5fce6ec3fe22937aa190a80d";
+            let assigned_to = "GoodMax"
+
+            chai.request(server)
+                .put(`/api/issues/${project}`)
+                .set("content-type", "application/x-www-form-urlencoded")
+                .send({
+                    _id,
+                    assigned_to
+                })
+                .end( async (err, res) => {
+                    let resBody = res.body;
+
+                    // get updated issue from the database
+                    let updatedIssue = await IssueModel.find({
+                        project,
+                        _id,
+                    });
+
+                    assert.notEqual(updatedIssue.createdAt, updatedIssue.updatedAt)
+                    assert.equal(res.status, 200);
+                    assert.equal(updatedIssue.assigned_to, assigned_to);
+                    assert.equal(resBody.result, "successfully updated");
+                    assert.equal(resBody._id, _id);
+                    done();
+                });
+        });
+
+        test("Update multiple fields on an issue", function (done) {
+
+            let project = "programming";
+            let _id = "5fce6ec3fe22937aa190a80d";
+            let assigned_to = "MadderMax";
+            let status_text = "Deadline approaching";
+            let issue_title = "Priority"
+
+            chai.request(server)
+                .put(`/api/issues/${project}`)
+                .set("content-type", "application/x-www-form-urlencoded")
+                .send({
+                    _id,
+                    assigned_to,
+                    status_text,
+                    issue_title
+                })
+                .end( async (err, res) => {
+                    let resBody = res.body;
+
+                    // get updated issue from the database
+                    let updatedIssue = await IssueModel.find({
+                        project,
+                        _id,
+                    });
+
+                    assert.notEqual(updatedIssue.createdAt, updatedIssue.updatedAt)
+                    assert.equal(res.status, 200);
+                    assert.equal(updatedIssue.assigned_to, assigned_to);
+                    assert.equal(updatedIssue.status_text, status_text);
+                    assert.equal(updatedIssue.issue_title, issue_title);
+                    assert.equal(resBody.result, "successfully updated");
+                    assert.equal(resBody._id, _id);
+                    done();
+                });
+        });
+
+        test("Update an issue with missing _id", function (done) {
+
+            let project = "programming";
+            let assigned_to = "MadMax2";
+            let status_text = "Deadline approaching";
+            let issue_title = "Priority"
+
+            chai.request(server)
+                .put(`/api/issues/${project}`)
+                .set("content-type", "application/x-www-form-urlencoded")
+                .send({
+                    assigned_to,
+                    status_text,
+                    issue_title
+                })
+                .end( (err, res) => {
+                    assert.equal(res.status, 200);
+                    assert.equal(res.body.error, "missing _id");
+                    done();
+                });
+        });
+
+        test("Update an issue with an invalid _id", function (done) {
+
+            let _id = "random"
+            let project = "programming";
+            let assigned_to = "MadMax2";
+            let status_text = "Deadline approaching";
+            let issue_title = "Priority"
+
+            chai.request(server)
+                .put(`/api/issues/${project}`)
+                .set("content-type", "application/x-www-form-urlencoded")
+                .send({
+                    _id,
+                    assigned_to,
+                    status_text,
+                    issue_title
+                })
+                .end( (err, res) => {
+                    assert.equal(res.status, 200);
+                    assert.equal(res.body.error, "could not update");
+                    assert.equal(res.body._id, _id);
+                    done();
+                });
+        });
     })
 
 });
