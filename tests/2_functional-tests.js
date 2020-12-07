@@ -48,6 +48,8 @@ suite('Functional Tests', function() {
 
         test("Create an issue with only required fields", function (done) {
 
+            let project         = "programming"
+
             let issue_title     = "New Task";
             let issue_text      = "A new task is upon us need to do it quick lads!!";
             let created_by      = "Madmax";
@@ -55,7 +57,7 @@ suite('Functional Tests', function() {
             let status_text     = "";
 
             chai.request(server)
-                .post("/api/issues/{project}")
+                .post(`/api/issues/${project}`)
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send({
                     issue_title,
@@ -83,6 +85,8 @@ suite('Functional Tests', function() {
 
         test("Create an issue without required fields", function (done) {
 
+            let project         = "programming"
+
             let issue_title     = undefined;
             let issue_text      = "A new task is upon us need to do it quick lads!!";
             let created_by      = "Madmax";
@@ -90,7 +94,7 @@ suite('Functional Tests', function() {
             let status_text     = "";
 
             chai.request(server)
-                .post("/api/issues/{project}")
+                .post(`/api/issues/${project}`)
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send({
                     issue_title,
