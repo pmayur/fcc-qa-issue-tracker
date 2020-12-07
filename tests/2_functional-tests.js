@@ -2,6 +2,7 @@ const chaiHttp = require('chai-http');
 const chai = require('chai');
 const assert = chai.assert;
 const server = require('../server');
+const IssueModel = require('../models/Issue');
 
 chai.use(chaiHttp);
 
@@ -105,6 +106,25 @@ suite('Functional Tests', function() {
                     assert.exists(resBody.error)
                     assert.equal(resBody.error, "required field(s) missing");
                     assert.notExists(err);
+                    done();
+                });
+        });
+
+        test("View all issues on a project", function (done) {
+
+            let project = "programming"
+
+            chai.request(server)
+                .get(`/api/issues/${project}`)
+                .end( async (err, res) => {
+                    let resBody = res.body;
+
+                    // get issues from the database
+                    let issuesForProject    = await IssueModel.find({ project })
+                    let noOfIssues          = issuesForProject.length;
+
+                    assert.equal(res.status, 200);
+                    assert.equal(resBody.length, noOfIssues);
                     done();
                 });
         });
