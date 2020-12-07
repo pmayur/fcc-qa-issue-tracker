@@ -4,10 +4,7 @@ module.exports = function (app) {
 
   app.route('/api/issues/:project')
 
-    .get(function (req, res){
-      let project = req.params.project;
-
-    })
+    .get(require('./issue/get-issue'))
 
     .post(require('./issue/post-issue'))
 
