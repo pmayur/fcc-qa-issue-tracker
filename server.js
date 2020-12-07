@@ -18,9 +18,9 @@ const mongoDBURI     = process.env.DB;
 
 //Set up default mongoose connection
 mongoose.connect(
-  mongoDBURI, 
-  { 
-    useNewUrlParser: true, 
+  mongoDBURI,
+  {
+    useNewUrlParser: true,
     useUnifiedTopology: true,
     autoReconnect: false
   },
@@ -36,7 +36,7 @@ mongoose.connect(
 //Get the default connection
 const db = mongoose.connection;
 
-// bind connection details to events 
+// bind connection details to events
 db.on('disconnected', console.log.bind(console, 'MongoDB disconnected'));
 
 let app = express();
@@ -63,9 +63,9 @@ app.route('/')
 //For FCC testing purposes
 fccTestingRoutes(app);
 
-//Routing for API 
-apiRoutes(app);  
-    
+//Routing for API
+apiRoutes(app);
+
 //404 Not Found Middleware
 app.use(function(req, res, next) {
   res.status(404)

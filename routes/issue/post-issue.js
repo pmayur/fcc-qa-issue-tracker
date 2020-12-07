@@ -19,19 +19,19 @@ module.exports = async function (req, res) {
         status_text,
     });
 
-    // mongoose check for validation errors 
+    // mongoose check for validation errors
     const reqBodyHasValidationErrors = newIssue.validateSync();
 
     // validation errors caught action
     if (reqBodyHasValidationErrors) {
-        return res.json({ 
-            error: "required field(s) missing" 
+        return res.json({
+            error: "required field(s) missing"
         });
     }
 
     // save the instance to database
     const saveInDatabase = newIssue.save();
-    
+
     // save successful action
     saveInDatabase.then((response) => {
         return res.json({
