@@ -10,13 +10,40 @@ const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
 
+// Import the mongoose model
+const mongoose = require('mongoose');
+
+// database uri
+const mongoDBURI     = process.env.DB;
+
+//Set up default mongoose connection
+mongoose.connect(
+  mongoDBURI, 
+  { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    autoReconnect: false
+  },
+  (err) => {
+    if(err) {
+      console.log("MongoDB connection error:", err.message)
+    } else {
+      console.log("MongoDB connected")
+    }
+  }
+);
+
+//Get the default connection
+const db = mongoose.connection;
+
+// bind connection details to events 
+db.on('disconnected', console.log.bind(console, 'MongoDB disconnected'));
+
 let app = express();
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({origin: '*'})); //For FCC testing purposes only
-
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
