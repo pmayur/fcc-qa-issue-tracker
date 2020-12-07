@@ -153,6 +153,33 @@ suite('Functional Tests', function() {
                     done();
                 });
         });
+
+        test("View issues on a project with multipe filters", function (done) {
+
+            let project = "programming"
+            let _id = "5fce6ec3fe22937aa190a80d"
+            let created_by      = "Madmax";
+            let query = `?_id=${_id}&created_by${created_by}`
+
+            chai.request(server)
+                .get(`/api/issues/${project}`+query)
+                .end( async (err, res) => {
+                    let resBody = res.body;
+
+                    // get issues from the database
+                    let issuesForProject = await IssueModel.find({
+                        project,
+                        _id,
+                        created_by,
+                    });
+
+                    let noOfIssues = issuesForProject.length;
+
+                    assert.equal(res.status, 200);
+                    assert.equal(resBody.length, noOfIssues);
+                    done();
+                });
+        });
     })
 
 });
