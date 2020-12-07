@@ -4,6 +4,10 @@ const mongoose = require("mongoose");
 // Define the Issue Schema
 const IssueSchema = new mongoose.Schema(
     {
+        project:{
+            type: String,
+            required: true
+        },
         issue_title: {
             type: String,
             required: true,
