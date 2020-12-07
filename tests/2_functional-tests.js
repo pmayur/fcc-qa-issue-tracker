@@ -53,8 +53,6 @@ suite('Functional Tests', function() {
             let issue_title     = "New Task";
             let issue_text      = "A new task is upon us need to do it quick lads!!";
             let created_by      = "Madmax";
-            let assigned_to     = "";
-            let status_text     = "";
 
             chai.request(server)
                 .post(`/api/issues/${project}`)
@@ -63,8 +61,6 @@ suite('Functional Tests', function() {
                     issue_title,
                     issue_text,
                     created_by,
-                    assigned_to,
-                    status_text,
                 })
                 .end( (err, res) => {
                     let resBody = res.body;
@@ -73,8 +69,8 @@ suite('Functional Tests', function() {
                     assert.equal(resBody.issue_title, issue_title);
                     assert.equal(resBody.issue_text, issue_text);
                     assert.equal(resBody.created_by, created_by);
-                    assert.equal(resBody.assigned_to, assigned_to);
-                    assert.equal(resBody.status_text, status_text);
+                    assert.equal(resBody.assigned_to, "");
+                    assert.equal(resBody.status_text, "");
                     assert.exists(resBody._id);
                     assert.exists(resBody.created_on);
                     assert.exists(resBody.updated_on);
@@ -90,8 +86,6 @@ suite('Functional Tests', function() {
             let issue_title     = undefined;
             let issue_text      = "A new task is upon us need to do it quick lads!!";
             let created_by      = "Madmax";
-            let assigned_to     = "";
-            let status_text     = "";
 
             chai.request(server)
                 .post(`/api/issues/${project}`)
@@ -100,8 +94,6 @@ suite('Functional Tests', function() {
                     issue_title,
                     issue_text,
                     created_by,
-                    assigned_to,
-                    status_text,
                 })
                 .end( (err, res) => {
                     let resBody = res.body;
