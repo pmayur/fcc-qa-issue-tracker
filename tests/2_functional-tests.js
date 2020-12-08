@@ -313,6 +313,67 @@ suite('Functional Tests', function() {
                     done();
                 });
         });
+
+        test("Delete an issue with missing _id", function (done) {
+
+            let _id = ""
+            let project = "programming";
+
+            chai.request(server)
+                .delete(`/api/issues/${project}`)
+                .set("content-type", "application/x-www-form-urlencoded")
+                .send({
+                    _id,
+                })
+                .end( (err, res) => {
+                    assert.equal(res.status, 200);
+                    assert.equal(res.body.error, "missing _id");
+                    done();
+                });
+        });
+
+        test("Delete an issue with an invalid _id", function (done) {
+
+            let _id = "random"
+            let project = "programming";
+            chai.request(server)
+                .delete(`/api/issues/${project}`)
+                .set("content-type", "application/x-www-form-urlencoded")
+                .send({
+                    _id,
+                })
+                .end( (err, res) => {
+                    assert.equal(res.status, 200);
+                    assert.equal(res.body.error, "could not delete");
+                    assert.equal(res.body._id, _id);
+                    done();
+                });
+        });
+
+        test("Delete an issue", async function (done) {
+
+            let project = "programming";
+            let issues = await IssueModel.find({ project }, '_id')
+
+            const _id = issues[Math.floor(Math.random() * issues.length)];
+
+            chai.request(server)
+                .delete(`/api/issues/${project}`)
+                .set("content-type", "application/x-www-form-urlencoded")
+                .send({
+                    _id,
+                })
+                .end( async (err, res) => {
+
+                    let getIssueJustDeleted = await IssueModel.find({ _id });
+
+                    assert.equal(res.status, 200);
+                    assert.isEmpty(getIssueJustDeleted);
+                    assert.equal(res.body.result, "successfully deleted");
+                    assert.equal(res.body._id, _id);
+                    done();
+                });
+        });
     })
 
 });
