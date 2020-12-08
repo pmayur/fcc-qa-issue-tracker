@@ -127,8 +127,8 @@ suite('Functional Tests', function() {
 
         test("View issues on a project with one filter", function (done) {
 
-            let project = "programming"
-            let _id = "5fce6ec3fe22937aa190a80d"
+            let project = "testing"
+            let _id = "5fcf6ae14565a82046877d24"
             let query = `?_id=${_id}`
 
             chai.request(server)
@@ -148,8 +148,8 @@ suite('Functional Tests', function() {
 
         test("View issues on a project with multipe filters", function (done) {
 
-            let project = "programming"
-            let _id = "5fce6ec3fe22937aa190a80d"
+            let project = "testing"
+            let _id = "5fcf6ae14565a82046877d24"
             let created_by      = "Madmax";
             let query = `?_id=${_id}&created_by=${created_by}`
 
@@ -175,8 +175,8 @@ suite('Functional Tests', function() {
 
         test("Update one field on an issue", function (done) {
 
-            let project = "programming";
-            let _id = "5fce6ec3fe22937aa190a80d";
+            let project = "testing";
+            let _id = "5fcf6ae14565a82046877d24";
             let assigned_to = "GoodMax"
 
             chai.request(server)
@@ -206,8 +206,8 @@ suite('Functional Tests', function() {
 
         test("Update multiple fields on an issue", function (done) {
 
-            let project = "programming";
-            let _id = "5fce6ec3fe22937aa190a80d";
+            let project = "testing";
+            let _id = "5fcf6ae14565a82046877d24";
             let assigned_to = "MadderMax";
             let status_text = "Deadline approaching";
             let issue_title = "Priority"
@@ -243,9 +243,9 @@ suite('Functional Tests', function() {
 
         test("Update an issue with no fields to update", function (done) {
 
-            let project = "programming";
+            let project = "testing";
 
-            let _id = "5fce6ec3fe22937aa190a80d";
+            let _id = "5fcf6ae14565a82046877d24";
             let assigned_to = "";
             let status_text = "";
             let issue_title = "";
@@ -350,12 +350,12 @@ suite('Functional Tests', function() {
                 });
         });
 
-        test("Delete an issue", async function (done) {
+        test("Delete an issue", async function () {
 
             let project = "programming";
             let issues = await IssueModel.find({ project }, '_id')
 
-            const _id = issues[Math.floor(Math.random() * issues.length)];
+            const _id = issues[Math.floor(Math.random() * issues.length)]._id.toString();
 
             chai.request(server)
                 .delete(`/api/issues/${project}`)
@@ -371,7 +371,6 @@ suite('Functional Tests', function() {
                     assert.isEmpty(getIssueJustDeleted);
                     assert.equal(res.body.result, "successfully deleted");
                     assert.equal(res.body._id, _id);
-                    done();
                 });
         });
     })
