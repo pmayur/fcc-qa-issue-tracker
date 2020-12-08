@@ -8,10 +8,7 @@ module.exports = function (app) {
 
     .post(require('./issue/post-issue'))
 
-    .put(function (req, res){
-      let project = req.params.project;
-
-    })
+    .put(require('./issue/put-issue'))
 
     .delete(function (req, res){
       let project = req.params.project;
