@@ -10,9 +10,6 @@ module.exports = function (app) {
 
     .put(require('./issue/put-issue'))
 
-    .delete(function (req, res){
-      let project = req.params.project;
-
-    });
+    .delete(require('./issue/delete-issue'))
 
 };
