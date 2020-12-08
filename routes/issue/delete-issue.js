@@ -11,7 +11,7 @@ module.exports = function (req, res) {
 
     IssueModel.deleteOne({ project, _id }, function (err, r) {
 
-        if (err) return res.json({ error: "could not delete", _id });
+        if (err || !r.deletedCount) return res.json({ error: "could not delete", _id });
 
         return res.json({
             result: "successfully deleted",
