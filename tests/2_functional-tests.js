@@ -151,7 +151,7 @@ suite('Functional Tests', function() {
             let project = "programming"
             let _id = "5fce6ec3fe22937aa190a80d"
             let created_by      = "Madmax";
-            let query = `?_id=${_id}&created_by${created_by}`
+            let query = `?_id=${_id}&created_by=${created_by}`
 
             chai.request(server)
                 .get(`/api/issues/${project}`+query)
@@ -190,7 +190,7 @@ suite('Functional Tests', function() {
                     let resBody = res.body;
 
                     // get updated issue from the database
-                    let updatedIssue = await IssueModel.find({
+                    let updatedIssue = await IssueModel.findOne({
                         project,
                         _id,
                     });
@@ -225,7 +225,7 @@ suite('Functional Tests', function() {
                     let resBody = res.body;
 
                     // get updated issue from the database
-                    let updatedIssue = await IssueModel.find({
+                    let updatedIssue = await IssueModel.findOne({
                         project,
                         _id,
                     });
@@ -261,7 +261,7 @@ suite('Functional Tests', function() {
                 })
                 .end( (err, res) => {
                     assert.equal(res.status, 200);
-                    assert.equal(res.body.error, "could not update");
+                    assert.equal(res.body.error, "no update field(s) sent");
                     assert.equal(res.body._id, _id);
                     done();
                 });
